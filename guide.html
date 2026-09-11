@@ -36,7 +36,10 @@
 }
 *{box-sizing:border-box;}
 body{margin:0; background:var(--ground); color:var(--ink); font-family:var(--font); font-size:16px; line-height:1.9;
-  -webkit-font-smoothing:antialiased; font-feature-settings:"palt" 0;}
+  -webkit-font-smoothing:antialiased; font-feature-settings:"palt" 0;
+  word-break:auto-phrase; text-wrap:pretty;}
+/* 語の途中で折り返さないかたまり */
+.nb{display:inline-block;}
 .doc{max-width:720px; margin:0 auto; padding:48px 24px 72px;}
 h1,h2,h3{font-family:var(--font-head); font-weight:700; line-height:1.45; text-wrap:balance; margin:0;}
 h1{font-size:30px; letter-spacing:.04em;}
@@ -150,7 +153,7 @@ footer{margin-top:52px; padding-top:18px; border-top:1px solid var(--rule); font
 <main class="doc">
   <header class="head">
     <p class="eyebrow">ぬくもりサロン ひつじのうたた寝　河野さん用</p>
-    <h1>ひつじくじ・クーポンの決めごと</h1>
+    <h1>ひつじくじ・<span class="nb">クーポンの決めごと</span></h1>
     <p class="meta">景品表示法で気をつけることを、アプリの設定に合わせてまとめました。<br>2026年9月　RoRTeCH 作成</p>
   </header>
 
