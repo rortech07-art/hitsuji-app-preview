@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ひつじくじ・クーポンの決めごと</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root{
+  --ground:#FAF4EA;      /* 生成り：アプリの背景と同じ */
+  --paper:#FFFCF6;       /* 紙 */
+  --ink:#3F2C1E;         /* 焦げ茶 */
+  --mute:#6E5642;
+  --rule:#E6D6BE;
+  --biwa:#A85C2A;        /* 枇杷色：アプリの操作色 */
+  --biwa-deep:#8E4C21;
+  --biwa-wash:#FAEADB;
+  --leaf:#3F6639;        /* 若葉：めやすの内側 */
+  --leaf-wash:#E6EFE1;
+  --warn-wash:#F7E4D6;
+  --font:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+  --font-head:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#1C1611; --paper:#261E17; --ink:#F1E6D8; --mute:#CDB9A3; --rule:#46382B;
+    --biwa:#E29161; --biwa-deep:#F0A677; --biwa-wash:#3A281B; --leaf:#9CC592; --leaf-wash:#22301F; --warn-wash:#3C2618;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#1C1611; --paper:#261E17; --ink:#F1E6D8; --mute:#CDB9A3; --rule:#46382B;
+  --biwa:#E29161; --biwa-deep:#F0A677; --biwa-wash:#3A281B; --leaf:#9CC592; --leaf-wash:#22301F; --warn-wash:#3C2618;
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--ground); color:var(--ink); font-family:var(--font); font-size:16px; line-height:1.9;
+  -webkit-font-smoothing:antialiased; font-feature-settings:"palt" 0;}
+.doc{max-width:720px; margin:0 auto; padding:48px 24px 72px;}
+h1,h2,h3{font-family:var(--font-head); font-weight:700; line-height:1.45; text-wrap:balance; margin:0;}
+h1{font-size:30px; letter-spacing:.04em;}
+h2{font-size:21px; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--rule);}
+h3{font-size:16.5px; font-family:var(--font); font-weight:700;}
+p{margin:0;}
+.num,td.num,.ledger{font-variant-numeric:tabular-nums;}
+b.hl{color:var(--biwa-deep);}
+
+.head{display:flex; flex-direction:column; gap:10px; padding-bottom:28px;}
+.eyebrow{font-size:12.5px; letter-spacing:.18em; color:var(--biwa-deep); font-weight:500;}
+.meta{font-size:13px; color:var(--mute);}
+
+section{margin-top:44px;}
+section > p + p, section > p + ul, section > ul + p{margin-top:12px;}
+
+/* まず、これだけ */
+.first{background:var(--paper); border:1px solid var(--rule); border-radius:14px; padding:22px 24px;}
+.first h2{border:0; padding:0; margin-bottom:12px; font-size:18px;}
+.first ul{list-style:none; margin:0; padding:0; display:grid; gap:12px;}
+.first li{display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:baseline;}
+.first .tag{font-size:12px; font-weight:700; padding:2px 10px; border-radius:999px; white-space:nowrap;}
+.tag.free{background:var(--leaf-wash); color:var(--leaf);}
+.tag.cap{background:var(--biwa-wash); color:var(--biwa-deep);}
+.tag.no{background:var(--warn-wash); color:var(--ink);}
+
+/* 表 */
+.scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:6px;}
+table{width:100%; border-collapse:collapse; font-size:14.5px; min-width:560px;}
+th,td{text-align:left; vertical-align:top; padding:12px 12px; border-top:1px solid var(--rule);}
+thead th{font-size:12.5px; font-weight:500; color:var(--mute); border-top:0; letter-spacing:.06em;}
+tbody th{font-weight:700;}
+td.limit{font-weight:700;}
+tr.ours th,tr.ours td{background:var(--biwa-wash);}
+.small{font-size:13.5px; color:var(--mute); line-height:1.8;}
+
+/* 2つのものさし */
+.rulers{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:6px;}
+.ruler{background:var(--paper); border:1px solid var(--rule); border-radius:14px; padding:20px 20px 18px; display:flex; flex-direction:column; gap:10px;}
+.ruler .which{font-size:12.5px; color:var(--mute); letter-spacing:.06em;}
+.ruler .big{font-family:var(--font-head); font-size:26px; line-height:1.3; color:var(--biwa-deep);}
+.ruler dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-size:14px;}
+.ruler dt{color:var(--mute);}
+.ruler dd{margin:0; font-weight:500;}
+.ruler .here{margin-top:4px; padding-top:10px; border-top:1px dashed var(--rule); font-size:14px;}
+
+/* いまの設定の計算（伝票のように） */
+.ledger{background:var(--paper); border:1px solid var(--rule); border-radius:14px; padding:6px 22px 18px; margin-top:6px;}
+.ledger .row{display:grid; grid-template-columns:3.2em 1fr auto auto auto; gap:0 10px; align-items:baseline;
+  padding:12px 0; border-bottom:1px dotted var(--rule); font-size:15px;}
+.ledger .rank{font-weight:700; color:var(--biwa-deep);}
+.ledger .x,.ledger .eq{color:var(--mute); font-size:13px;}
+.ledger .v{text-align:right; min-width:4.6em;}
+.ledger .row.miss{color:var(--mute);}
+.ledger .sum{display:flex; justify-content:space-between; align-items:baseline; padding-top:14px; font-weight:700;}
+.ledger .sum b{font-size:24px; font-family:var(--font-head);}
+.verdict{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-top:12px;}
+.pill{display:inline-block; font-size:12.5px; font-weight:700; padding:3px 12px; border-radius:999px;}
+.pill.ok{background:var(--leaf-wash); color:var(--leaf);}
+.pill.warn{background:var(--warn-wash); color:var(--biwa-deep);}
+
+/* 手順 */
+ol.steps{margin:6px 0 0; padding:0; list-style:none; counter-reset:s; display:grid; gap:14px;}
+ol.steps li{counter-increment:s; display:grid; grid-template-columns:2em 1fr; gap:10px; align-items:baseline;}
+ol.steps li::before{content:counter(s); font-family:var(--font-head); font-weight:700; color:var(--biwa-deep); font-size:18px;}
+.ui{font-weight:700; white-space:nowrap;}
+.swatch{display:inline-block; width:.9em; height:.9em; border-radius:3px; vertical-align:-.08em; margin-right:4px;}
+.swatch.g{background:var(--leaf-wash); border:1px solid var(--leaf);}
+.swatch.o{background:var(--warn-wash); border:1px solid var(--biwa);}
+
+/* 気をつけること・やらないこと */
+ul.plain{margin:6px 0 0; padding-left:1.2em; display:grid; gap:10px;}
+ul.plain li::marker{color:var(--biwa);}
+.dont{list-style:none; padding:0; margin:6px 0 0; display:grid; gap:12px;}
+.dont li{background:var(--paper); border:1px solid var(--rule); border-radius:12px; padding:14px 18px;}
+.dont b{display:block; margin-bottom:2px;}
+
+/* チェックリスト */
+.check{background:var(--biwa-wash); border-radius:14px; padding:22px 24px;}
+.check h2{border:0; padding:0;}
+.check ul{list-style:none; margin:0; padding:0; display:grid; gap:12px;}
+.check li{display:grid; grid-template-columns:22px 1fr; gap:12px; align-items:start;}
+.box{width:20px; height:20px; border:2px solid var(--biwa); border-radius:4px; background:var(--paper); margin-top:5px;}
+
+.contact{display:grid; gap:8px; margin-top:6px;}
+.contact div{display:flex; flex-wrap:wrap; gap:4px 14px; padding:10px 0; border-bottom:1px solid var(--rule);}
+.contact b{min-width:13em;}
+
+footer{margin-top:52px; padding-top:18px; border-top:1px solid var(--rule); font-size:13px; color:var(--mute); line-height:1.9;}
+
+@media (max-width:600px){
+  .doc{padding:32px 18px 56px;}
+  h1{font-size:25px;}
+  .rulers{grid-template-columns:1fr;}
+  .ledger .row{grid-template-columns:3em 1fr auto; row-gap:2px;}
+  .ledger .row .x,.ledger .row .rate{grid-column:2;}
+  .contact b{min-width:0;}
+}
+@media print{
+  :root{--ground:#fff; --paper:#fff;}
+  body{font-size:12.5pt;}
+  .doc{max-width:none; padding:0;}
+  section,.ruler,.ledger,.check{break-inside:avoid;}
+  .scroll{overflow:visible;}
+}
+@page{size:A4; margin:16mm 16mm 18mm;}
+</style>
+
+</head>
+<body>
+<main class="doc">
+  <header class="head">
+    <p class="eyebrow">ぬくもりサロン ひつじのうたた寝　河野さん用</p>
+    <h1>ひつじくじ・クーポンの決めごと</h1>
+    <p class="meta">景品表示法で気をつけることを、アプリの設定に合わせてまとめました。<br>2026年9月　RoRTeCH 作成</p>
+  </header>
+
+  <div class="first">
+    <h2>まず、これだけ覚えてください</h2>
+    <ul>
+      <li><span class="tag free">上限なし</span><p>みんなに同じ条件で配るクーポン（キャンペーン）は「値引き」です。金額の上限はありません。</p></li>
+      <li><span class="tag cap">上限あり</span><p>くじで当たるクーポンは「景品」です。<b class="hl">1つは1万円まで</b>、<b class="hl">合計は売上の2%まで</b>にします。</p></li>
+      <li><span class="tag no">出さない</span><p>口コミのお礼に、クーポンやくじは出しません。</p></li>
+    </ul>
+  </div>
+
+  <section>
+    <h2>どの決まりに当たるか</h2>
+    <p>同じ「500円引き」でも、配り方で決まりが変わります。</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>配り方</th><th>例</th><th>決まりの名前</th><th>上限</th></tr></thead>
+        <tbody>
+          <tr><th>みんなに配るクーポン</th><td>秋のドライヘッド 500円引き</td><td>値引き</td><td class="limit">なし</td></tr>
+          <tr class="ours"><th>くじで当たるクーポン</th><td>ひつじくじ</td><td>一般懸賞（くじ）</td><td class="limit">1つ1万円まで・合計は売上の2%まで</td></tr>
+          <tr><th>来た方全員にプレゼント</th><td>ご来店の方にびわの葉茶</td><td>総付景品（もれなく）</td><td class="limit">お会計の20%まで（1,000円未満のお会計なら200円まで）</td></tr>
+          <tr><th>お会計なしで誰でも応募</th><td>LINEの友だち全員で抽選</td><td>オープン懸賞</td><td class="limit">なし</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">くじで決まる値引きは「値引き」ではなく「景品」として扱われます。ひつじくじの景品はクーポン（値引き）ですが、くじで配るので上限があります。</p>
+  </section>
+
+  <section>
+    <h2>くじの2つのものさし</h2>
+    <div class="rulers">
+      <div class="ruler">
+        <p class="which">ものさし1　景品1つの上限</p>
+        <p class="big">1万円まで</p>
+        <dl>
+          <dt>お会計が5,000円未満</dt><dd>そのお会計の20倍まで</dd>
+          <dt>お会計が5,000円以上</dt><dd>10万円まで</dd>
+        </dl>
+        <p class="here">ひつじくじはお会計のたびに引けるので、いちばん安いお会計（ハーブ足湯 <span class="num">500</span>円）で考えます。<span class="num">500</span>円×20＝<b class="hl num">10,000円</b>。いまの1等（1,000円引き）は十分に内側です。</p>
+      </div>
+      <div class="ruler">
+        <p class="which">ものさし2　景品の合計</p>
+        <p class="big">売上の2%まで</p>
+        <dl>
+          <dt>数える期間</dt><dd>くじをやっている期間</dd>
+          <dt>比べる相手</dt><dd>その期間の売上の見込み</dd>
+        </dl>
+        <p class="here">例：1か月に来店<span class="num">100</span>回、客単価<span class="num">8,000</span>円なら、売上の見込みは<span class="num">80</span>万円。くじの景品は合計<b class="hl num">16,000円</b>までです。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>いまの設定で計算してみる</h2>
+    <p>景品の金額に、当たる確率をかけて足すと「1回引くと、平均でいくらぶんの景品が出るか」がわかります。</p>
+    <div class="ledger" role="table" aria-label="いまのひつじくじの計算">
+      <div class="row" role="row"><span class="rank">1等</span><span>1,000円引き</span><span class="x rate num">× 3%</span><span class="eq">＝</span><span class="v num">30円</span></div>
+      <div class="row" role="row"><span class="rank">2等</span><span>ハーブ足湯 無料（500円）</span><span class="x rate num">× 10%</span><span class="eq">＝</span><span class="v num">50円</span></div>
+      <div class="row" role="row"><span class="rank">3等</span><span>200円引き</span><span class="x rate num">× 20%</span><span class="eq">＝</span><span class="v num">40円</span></div>
+      <div class="row miss" role="row"><span class="rank">—</span><span>はずれ</span><span class="x rate num">67%</span><span class="eq"></span><span class="v num">0円</span></div>
+      <div class="sum"><span>1回あたりの景品</span><b class="num">120円</b></div>
+    </div>
+    <div class="verdict">
+      <span class="pill ok">めやすの内側</span>
+      <p>9月の客単価 <span class="num">8,750</span>円に対して <b class="num">1.4%</b>。2%より小さいので大丈夫です。</p>
+    </div>
+    <p class="small">くじはお会計1回につき1回なので、「1回あたりの景品 ÷ 客単価」が2%以内なら、景品の合計も売上の2%以内に収まります。アプリはこの計算を自動でしています。</p>
+  </section>
+
+  <section>
+    <h2>大きな景品を置きたいとき</h2>
+    <p>確率を下げれば、大きな景品も置けます。下の3つは、どれも1回あたり30円で同じです。</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>景品</th><th>確率</th><th>1回あたり</th><th>ものさし1（1万円まで）</th></tr></thead>
+        <tbody>
+          <tr><th class="num">1,000円引き</th><td class="num">3%</td><td class="num">30円</td><td><span class="pill ok">内側</span></td></tr>
+          <tr><th class="num">3,000円引き</th><td class="num">1%</td><td class="num">30円</td><td><span class="pill ok">内側</span></td></tr>
+          <tr><th class="num">10,000円引き</th><td class="num">0.3%</td><td class="num">30円</td><td><span class="pill ok">ちょうど上限</span></td></tr>
+          <tr><th class="num">15,000円引き</th><td class="num">0.2%</td><td class="num">30円</td><td><span class="pill warn">置けません</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">「○%オフ」のクーポンを景品にするときは、客単価で円に直して考えます（アプリが自動で直します）。</p>
+  </section>
+
+  <section>
+    <h2>アプリでの設定のしかた</h2>
+    <ol class="steps">
+      <li><p>下の<span class="ui">その他</span>から<span class="ui">クーポン・ひつじくじ・LINE配信</span>を開き、<span class="ui">ひつじくじ</span>を選びます。</p></li>
+      <li><p>景品（クーポン）と確率を入れます。「残り」に本数を入れると、なくなった時点で自動的に「はずれ」になります。空欄なら本数は無制限です。</p></li>
+      <li><p>下の枠の色を見ます。<span class="swatch g"></span>緑はめやすの内側、<span class="swatch o"></span>オレンジは見直しの合図です。</p></li>
+      <li><p><span class="ui">保存する</span>を押します。確率の合計が100%を超えていると保存できません。</p></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>みんなに配るクーポンで気をつけること</h2>
+    <p>値引きのクーポンには金額の上限はありませんが、書き方の決まり（表示のルール）があります。</p>
+    <ul class="plain">
+      <li>期限を書いたら守ります。「今月だけ」を毎月くり返すと、うその表示と見なされるおそれがあります。</li>
+      <li>「通常○円のところ」と書くのは、実際にその値段で売っていたときだけにします。</li>
+      <li>使える条件（メニュー・曜日・時間）は、クーポンの説明にはっきり書きます。アプリが自動で確かめるのは金額の条件だけなので、メニューや曜日の条件は会計のときに河野さんが確かめてください。</li>
+      <li>1回のお会計で使えるクーポンは1枚です（アプリの決まり）。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>やらないこと</h2>
+    <ul class="dont">
+      <li><b>口コミのお礼にクーポンやくじを出す</b>Googleのクチコミのルールで禁止されています。また、お店が関わった口コミを広告だとわからない形で出すと、ステルスマーケティングとして景品表示法の違反になります（2023年10月から）。口コミのお願いは、特典なしで行います。</li>
+      <li><b>当たりの確率や本数を、実際より多く見せる</b>アプリはお客様の画面に、設定どおりの確率を出しています。チラシやLINEで書くときも同じ数字にします。</li>
+      <li><b>景品の値打ちを、根拠なく大きく書く</b>「5,000円相当」などと書くときは、実際にその値段で売っているものに限ります。</li>
+    </ul>
+  </section>
+
+  <section class="check">
+    <h2>くじを始める前のチェック</h2>
+    <ul>
+      <li><span class="box" aria-hidden="true"></span><p>景品1つは1万円以下になっている</p></li>
+      <li><span class="box" aria-hidden="true"></span><p>アプリの枠が緑になっている（1回あたりの景品が客単価の2%以内）</p></li>
+      <li><span class="box" aria-hidden="true"></span><p>期間を決めた（終わりの日か、景品の本数）</p></li>
+      <li><span class="box" aria-hidden="true"></span><p>チラシやLINEに書く確率が、アプリの設定と同じ</p></li>
+      <li><span class="box" aria-hidden="true"></span><p>口コミと結びつけていない</p></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>迷ったときの相談先</h2>
+    <p>新しいくじを始める前や、大きな景品を出す前に、電話で相談できます。窓口の番号は各ウェブサイトで「景品表示法 相談」と調べてください。</p>
+    <div class="contact">
+      <div><b>消費者庁</b><span>景品表示法を担当している国の役所</span></div>
+      <div><b>公正取引委員会 九州事務所</b><span>福岡市。九州の相談を受けています</span></div>
+      <div><b>大分県の景品表示法の担当窓口</b><span>県でも相談を受けています</span></div>
+    </div>
+  </section>
+
+  <footer>
+    このメモは、2026年9月時点の景品表示法の決まりを、アプリの設定に合わせてわかりやすく言い換えたものです。法律の助言ではありません。
+    大きな景品を出すときや、書いていないやり方をするときは、上の相談先で確認してください。
+  </footer>
+</main>
+
+</body>
+</html>
